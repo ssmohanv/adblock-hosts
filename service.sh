@@ -1,7 +1,7 @@
 #!/system/bin/sh
 
 # Debugging message
-echo "[DEBUG] service.sh executed" >> /data/local/tmp/debug_log.txt
+echo "[DEBUG] service.sh executed during boot" >> /data/local/tmp/debug_log.txt
 
 # Paths
 UPDATE_SCRIPT="/data/local/tmp/update_hosts.sh"
