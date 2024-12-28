@@ -1,32 +1,29 @@
-!/system/bin/sh
+#!/system/bin/sh
 
-# Path to the update script
+# Debugging message
+echo "[DEBUG] service.sh executed" >> /data/local/tmp/debug_log.txt
+
+# Paths
 UPDATE_SCRIPT="/data/local/tmp/update_hosts.sh"
-
-# Default update time (1:00 AM)
-DEFAULT_TIME="1:00"
-
-# User-defined time file
 USER_TIME_FILE="/data/local/tmp/update_time"
+DEFAULT_TIME="1:00"  # Default time if no user-defined time is set
 
-# Read user-preferred time if available
+# Check if user-defined time exists
 if [ -f "$USER_TIME_FILE" ]; then
     USER_TIME=$(cat "$USER_TIME_FILE")
-    # Validate time format (HH:MM)
+    # Validate user-provided time (HH:MM format)
     if echo "$USER_TIME" | grep -Eq '^([01]?[0-9]|2[0-3]):[0-5][0-9]$'; then
         SCHEDULE_TIME="$USER_TIME"
+        echo "[DEBUG] Using user-defined schedule time: $SCHEDULE_TIME" >> /data/local/tmp/debug_log.txt
     else
-        echo "[Magisk Module] Invalid time format in $USER_TIME_FILE. Falling back to default."
         SCHEDULE_TIME="$DEFAULT_TIME"
+        echo "[DEBUG] Invalid time format in $USER_TIME_FILE. Falling back to default: $DEFAULT_TIME" >> /data/local/tmp/debug_log.txt
     fi
 else
-    echo "[Magisk Module] No user time file found. Using default time."
     SCHEDULE_TIME="$DEFAULT_TIME"
+    echo "[DEBUG] No user-defined time found. Using default: $DEFAULT_TIME" >> /data/local/tmp/debug_log.txt
 fi
 
 # Schedule the update task
 echo "sh $UPDATE_SCRIPT" | at "$SCHEDULE_TIME"
-
-echo "[Magisk Module] Hosts update task scheduled at $SCHEDULE_TIME."
-exit 0
-
+echo "[DEBUG] Update task scheduled at $SCHEDULE_TIME" >> /data/local/tmp/debug_log.txt
