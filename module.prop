@@ -1,0 +1,6 @@
+id=merge_hosts_module
+name=Hosts Merger Module
+version=1.0
+versionCode=1
+author=m0han
+description=Systemlessly merge and update the Android hosts file.
